@@ -240,6 +240,12 @@ def handle_max_iterations_exceeded(
         AgentFinish with the final answer after exceeding max iterations.
     """
     if verbose:
+        # Debug: log what we received
+        if iterations is None and max_iterations is None:
+            printer.print(
+                content=f"[DEBUG] handle_max_iterations_exceeded called with iterations=None, max_iterations=None",
+                color="red",
+            )
         # Show iteration counts if available, even if one is None
         if iterations is not None or max_iterations is not None:
             iter_str = str(iterations) if iterations is not None else "?"
