@@ -303,6 +303,10 @@ class Crew(FlowTrackable, BaseModel):
         default=None,
         description="Whether to enable tracing for the crew. True=always enable, False=always disable, None=check environment/user settings.",
     )
+    max_iter: int | None = Field(
+        default=None,
+        description="Maximum number of iterations for agents in this crew. If set, overrides individual agent max_iter values.",
+    )
 
     @field_validator("id", mode="before")
     @classmethod
