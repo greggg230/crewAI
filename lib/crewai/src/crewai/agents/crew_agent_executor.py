@@ -496,6 +496,8 @@ class CrewAgentExecutor(CrewAgentExecutorMixin):
         while True:
             try:
                 if has_reached_max_iterations(self.iterations, self.max_iter):
+                    if self.agent and self.agent.verbose:
+                        print(f"[DEBUG] Max iterations check (Native Tools): iterations={self.iterations}, max_iter={self.max_iter}, reached={self.iterations >= self.max_iter}")
                     formatted_answer = handle_max_iterations_exceeded(
                         None,
                         printer=self._printer,
@@ -1177,6 +1179,8 @@ class CrewAgentExecutor(CrewAgentExecutorMixin):
         while not isinstance(formatted_answer, AgentFinish):
             try:
                 if has_reached_max_iterations(self.iterations, self.max_iter):
+                    if self.agent and self.agent.verbose:
+                        print(f"[DEBUG] Max iterations check (Async ReAct): iterations={self.iterations}, max_iter={self.max_iter}, reached={self.iterations >= self.max_iter}")
                     formatted_answer = handle_max_iterations_exceeded(
                         formatted_answer,
                         printer=self._printer,
@@ -1325,6 +1329,8 @@ class CrewAgentExecutor(CrewAgentExecutorMixin):
         while True:
             try:
                 if has_reached_max_iterations(self.iterations, self.max_iter):
+                    if self.agent and self.agent.verbose:
+                        print(f"[DEBUG] Max iterations check (Native Tools): iterations={self.iterations}, max_iter={self.max_iter}, reached={self.iterations >= self.max_iter}")
                     formatted_answer = handle_max_iterations_exceeded(
                         None,
                         printer=self._printer,
