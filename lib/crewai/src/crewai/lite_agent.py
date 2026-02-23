@@ -858,6 +858,8 @@ class LiteAgent(FlowTrackable, BaseModel):
                         llm=cast(LLM, self.llm),
                         callbacks=self._callbacks,
                         verbose=self.verbose,
+                        iterations=self._iterations,
+                        max_iterations=self.max_iterations,
                     )
 
                 enforce_rpm_limit(self.request_within_rpm_limit)

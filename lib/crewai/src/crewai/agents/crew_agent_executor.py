@@ -350,6 +350,8 @@ class CrewAgentExecutor(CrewAgentExecutorMixin):
                         llm=self.llm,
                         callbacks=self.callbacks,
                         verbose=self.agent.verbose,
+                        iterations=self.iterations,
+                        max_iterations=self.max_iter,
                     )
                     break
 
@@ -508,6 +510,8 @@ class CrewAgentExecutor(CrewAgentExecutorMixin):
                         llm=self.llm,
                         callbacks=self.callbacks,
                         verbose=self.agent.verbose,
+                        iterations=self.iterations,
+                        max_iterations=self.max_iter,
                     )
                     self._show_logs(formatted_answer)
                     return formatted_answer
@@ -1191,6 +1195,8 @@ class CrewAgentExecutor(CrewAgentExecutorMixin):
                         llm=self.llm,
                         callbacks=self.callbacks,
                         verbose=self.agent.verbose,
+                        iterations=self.iterations,
+                        max_iterations=self.max_iter,
                     )
                     break
 
@@ -1341,6 +1347,8 @@ class CrewAgentExecutor(CrewAgentExecutorMixin):
                         llm=self.llm,
                         callbacks=self.callbacks,
                         verbose=self.agent.verbose,
+                        iterations=self.iterations,
+                        max_iterations=self.max_iter,
                     )
                     self._show_logs(formatted_answer)
                     return formatted_answer

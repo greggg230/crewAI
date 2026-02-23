@@ -413,6 +413,8 @@ class AgentExecutor(Flow[AgentReActState], CrewAgentExecutorMixin):
             llm=self.llm,
             callbacks=self.callbacks,
             verbose=self.agent.verbose,
+            iterations=self.state.iterations,
+            max_iterations=self.max_iter,
         )
 
         self.state.current_answer = formatted_answer

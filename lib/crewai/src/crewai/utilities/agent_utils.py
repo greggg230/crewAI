@@ -220,6 +220,8 @@ def handle_max_iterations_exceeded(
     llm: LLM | BaseLLM,
     callbacks: list[TokenCalcHandler],
     verbose: bool = True,
+    iterations: int | None = None,
+    max_iterations: int | None = None,
 ) -> AgentFinish:
     """Handles the case when the maximum number of iterations is exceeded. Performs one more LLM call to get the final answer.
 
@@ -231,15 +233,23 @@ def handle_max_iterations_exceeded(
         llm: The LLM instance to call.
         callbacks: List of callbacks for the LLM call.
         verbose: Whether to print output.
+        iterations: Current iteration count (for logging).
+        max_iterations: Maximum iteration limit (for logging).
 
     Returns:
         AgentFinish with the final answer after exceeding max iterations.
     """
     if verbose:
-        printer.print(
-            content="Maximum iterations reached. Requesting final answer.",
-            color="yellow",
-        )
+        if iterations is not None and max_iterations is not None:
+            printer.print(
+                content=f"Maximum iterations reached (iteration {iterations}/{max_iterations}). Requesting final answer.",
+                color="yellow",
+            )
+        else:
+            printer.print(
+                content="Maximum iterations reached. Requesting final answer.",
+                color="yellow",
+            )
 
     if formatted_answer and hasattr(formatted_answer, "text"):
         assistant_message = (
