@@ -240,9 +240,12 @@ def handle_max_iterations_exceeded(
         AgentFinish with the final answer after exceeding max iterations.
     """
     if verbose:
-        if iterations is not None and max_iterations is not None:
+        # Show iteration counts if available, even if one is None
+        if iterations is not None or max_iterations is not None:
+            iter_str = str(iterations) if iterations is not None else "?"
+            max_str = str(max_iterations) if max_iterations is not None else "?"
             printer.print(
-                content=f"Maximum iterations reached (iteration {iterations}/{max_iterations}). Requesting final answer.",
+                content=f"Maximum iterations reached (iteration {iter_str}/{max_str}). Requesting final answer.",
                 color="yellow",
             )
         else:
