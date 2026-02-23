@@ -250,19 +250,53 @@ def handle_max_iterations_exceeded(
 
     messages.append(format_message_for_llm(assistant_message, role="assistant"))
 
-    # Perform one more LLM call to get the final answer
-    answer = llm.call(
-        messages,
-        callbacks=callbacks,
-    )
-
+    # Retry LLM call up to 3 times if we get empty responses
+    max_retries = 3
+    answer = None
+    
+    for attempt in range(max_retries):
+        # Perform one more LLM call to get the final answer
+        answer = llm.call(
+            messages,
+            callbacks=callbacks,
+        )
+        
+        if answer is not None and answer != "":
+            break  # Got a valid response
+        
+        if verbose and attempt < max_retries - 1:
+            printer.print(
+                content=f"Received empty response from LLM call (attempt {attempt + 1}/{max_retries}). Retrying...",
+                color="yellow",
+            )
+    
+    # If we still have an empty response after retries, use the last formatted_answer if available
     if answer is None or answer == "":
         if verbose:
             printer.print(
-                content="Received None or empty response from LLM call.",
+                content="Received None or empty response from LLM call after retries. Using last available answer.",
+                color="yellow",
+            )
+        
+        # If we have a previous formatted_answer, use it
+        if formatted_answer:
+            if isinstance(formatted_answer, AgentFinish):
+                return formatted_answer
+            elif hasattr(formatted_answer, "text"):
+                # Convert AgentAction to AgentFinish
+                return AgentFinish(
+                    thought=getattr(formatted_answer, "thought", ""),
+                    output=formatted_answer.text,
+                    text=formatted_answer.text,
+                )
+        
+        # Last resort: raise error only if we have absolutely nothing
+        if verbose:
+            printer.print(
+                content="No previous answer available. Raising error.",
                 color="red",
             )
-        raise ValueError("Invalid response from LLM call - None or empty.")
+        raise ValueError("Invalid response from LLM call - None or empty after retries and no previous answer available.")
 
     formatted = format_answer(answer=answer)
 

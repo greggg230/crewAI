@@ -155,6 +155,9 @@ class CrewAgentExecutor(CrewAgentExecutorMixin):
         self.messages: list[LLMMessage] = []
         self.iterations = 0
         self.log_error_after = 3
+        # Log max_iter for debugging
+        if self.agent and self.agent.verbose:
+            print(f"[DEBUG] CrewAgentExecutor created with max_iter={self.max_iter}")
         self.before_llm_call_hooks: list[Callable[..., Any]] = []
         self.after_llm_call_hooks: list[Callable[..., Any]] = []
         self.before_llm_call_hooks.extend(get_before_llm_call_hooks())
